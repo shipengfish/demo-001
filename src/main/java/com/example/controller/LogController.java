@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import com.example.demo.FluxWmsClient;
+import com.example.demo.FluxWmsConfig;
 import com.example.demo.NeedLog;
+import com.example.demo.PutSkuDataPhpRequest;
 import com.example.demo.PutSkuDataRequest;
 import com.example.demo.PutSkuDataWmsResponse;
 import feign.Feign;
@@ -28,6 +30,8 @@ import java.net.URISyntaxException;
 public class LogController {
     @Autowired
     private FluxWmsClient fluxWmsClient;
+    @Autowired
+    private FluxWmsConfig fluxWmsConfig;
 
     @Autowired
     public LogController(Decoder decoder, Encoder encoder) {
@@ -37,12 +41,20 @@ public class LogController {
                 .target(Target.EmptyTarget.create(FluxWmsClient.class));
     }
 
+    public String getFluxWmsBaseUrl() {
+        if (fluxWmsConfig.isUseTestEnv()) {
+            return fluxWmsConfig.getTestWmsUrl();
+        }
+        return fluxWmsConfig.getWmsBaseUrl();
+    }
+
     @GetMapping("/tt")
     @NeedLog
-    public void ttA(PutSkuDataRequest putSkuDataRequest) throws URISyntaxException {
+    public void ttA(PutSkuDataPhpRequest fluxWmsPhpRequest) throws URISyntaxException {
         hha();
+        PutSkuDataRequest putSkuDataRequest = new PutSkuDataRequest(fluxWmsPhpRequest, fluxWmsConfig);
 
-        PutSkuDataWmsResponse putSkuDataWmsResponse = fluxWmsClient.putSKUData(new URI("http://localhost:8888" + "/put-sku-data"), putSkuDataRequest);
+        PutSkuDataWmsResponse putSkuDataWmsResponse = fluxWmsClient.putSKUData(new URI(getFluxWmsBaseUrl() + "/put-sku-data"), putSkuDataRequest);
 
         System.out.println(putSkuDataWmsResponse);
     }

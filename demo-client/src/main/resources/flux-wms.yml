@@ -1,10 +1,10 @@
 flux:
   wms:
-    clientCustomerId: "FLUXWMSJSON"
-    clientDb: "FLUXWMS"
-    format: "JSON"
-    useTestEnv: false
-    appKey: "appKey"
-    appToken: "appToken"
-    wmsBaseUrl: "wmsBaseUrl"
-    testWmsUrl: "testWmsUrl"
+    clientCustomerId: FLUXWMSJSON
+    clientDb: FLUXWMS
+    format: JSON
+    useTestEnv: true
+    appKey: appKey
+    appToken: appToken
+    testWmsUrl: http://localhost:8888
+    wmsBaseUrl: http://localhost:9999

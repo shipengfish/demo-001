@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  * @date 2018/9/3
  * @since 1.0
  */
-//@Data
+@Data
 @EqualsAndHashCode(callSuper = true)
 public class PutSkuDataRequest extends BaseFluxWmsRequest {
 
@@ -22,9 +22,6 @@ public class PutSkuDataRequest extends BaseFluxWmsRequest {
 
     @Required
     String name;
-
-    public PutSkuDataRequest() {
-    }
 
     public PutSkuDataRequest(BaseFluxWmsPhpRequest phpRequest, FluxWmsConfig fluxWmsConfig) {
         super(phpRequest, fluxWmsConfig);
