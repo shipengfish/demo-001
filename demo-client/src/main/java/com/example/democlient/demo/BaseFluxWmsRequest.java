@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.democlient.demo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -14,6 +14,9 @@ import java.io.Serializable;
  */
 @Data
 public abstract class BaseFluxWmsRequest implements Serializable {
+    public BaseFluxWmsRequest() {
+    }
+
     private static final long serialVersionUID = 4615865207972092658L;
     /**
      * 描述: DATAHUB 客户编码. 固定值: FLUXWMSJSON.
@@ -82,9 +85,6 @@ public abstract class BaseFluxWmsRequest implements Serializable {
      */
     @JsonProperty("format")
     String format;
-
-    public BaseFluxWmsRequest() {
-    }
 
     BaseFluxWmsRequest(BaseFluxWmsPhpRequest phpRequest, FluxWmsConfig fluxWmsConfig) {
         ActionType actionType = phpRequest.getActionType();

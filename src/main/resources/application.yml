@@ -5,3 +5,4 @@ spring:
     restart:
       enabled: true
 
+baseUrl: localhost:9999
