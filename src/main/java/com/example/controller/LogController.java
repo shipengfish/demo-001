@@ -42,7 +42,7 @@ public class LogController {
     public void ttA(PutSkuDataRequest putSkuDataRequest) throws URISyntaxException {
         hha();
 
-        PutSkuDataWmsResponse putSkuDataWmsResponse = fluxWmsClient.putSKUData(new URI("/put-sku-data"), putSkuDataRequest);
+        PutSkuDataWmsResponse putSkuDataWmsResponse = fluxWmsClient.putSKUData(new URI("http://localhost:8888" + "/put-sku-data"), putSkuDataRequest);
 
         System.out.println(putSkuDataWmsResponse);
     }
