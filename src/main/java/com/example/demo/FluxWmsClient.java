@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import com.example.config.FluxFeignConfiguration;
 import feign.RequestLine;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +12,7 @@ import java.net.URI;
  * @date 2018/9/5
  * @since 1.0
  */
-@FeignClient(name = "flux-wms", configuration = FluxFeignConfiguration.class, url = "#{'${baseUrl:localhost:9999}'}")
+@FeignClient(name = "flux-wms", url = "#{'${baseUrl:localhost:9999}'}")
 public interface FluxWmsClient {
 
     /**
