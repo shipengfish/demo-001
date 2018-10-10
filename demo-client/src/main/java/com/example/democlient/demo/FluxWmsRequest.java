@@ -22,8 +22,8 @@ public class FluxWmsRequest implements Serializable {
      * 描述: DATAHUB 客户编码. 固定值: FLUXWMSJSON.
      * 是否必填: 是.
      */
-    @JsonProperty("client_customerid")
-    protected String clientCustomerId;
+//    @JsonProperty("client_customerid")
+    protected String client_customerid;
 
     /**
      * 描述: API 接口名称.
@@ -112,7 +112,7 @@ public class FluxWmsRequest implements Serializable {
         this.appKey = config.getAppKey();
         this.appToken = config.getAppToken();
         this.timestamp = "";
-        this.clientCustomerId = config.getClientCustomerId();
+        this.client_customerid = config.getClientCustomerId();
         this.clientDb = config.getClientDb();
         this.format = config.getFormat();
         this.sign = "";

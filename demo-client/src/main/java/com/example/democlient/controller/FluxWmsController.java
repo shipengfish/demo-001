@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.democlient.demo.FluxWmsRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -21,35 +22,54 @@ import java.util.List;
 public class FluxWmsController {
 
     @PostMapping("/")
-    public JSONObject putSKUData(@RequestBody FluxWmsRequest putSkuDataRequest) {
-        System.out.println(JSON.toJSONString(putSkuDataRequest));
-        System.out.println(putSkuDataRequest);
+    public JSONObject putSKUData(@RequestParam("client_customerid") String client_customerid,
+                                 @RequestParam("method") String method,
+                                 @RequestParam("messageid") String messageid,
+                                 @RequestParam("data") String data,
+                                 @RequestParam(value = "client_db") String client_db,
+                                 @RequestParam("apptoken") String apptoken,
+                                 @RequestParam("appkey") String appkey,
+                                 @RequestParam("sign") String sign,
+                                 @RequestParam(value = "timestamp", required = false) String timestamp,
+                                 @RequestParam(value = "format", required = false) String format
+    ) {
+//        String method = fluxWmsRequest.getMethod();
 
-        if ("putSKUData".equalsIgnoreCase(putSkuDataRequest.getMethod())) {
+        if ("putSKUData".equalsIgnoreCase(method)) {
+//            try {
+//                Thread.sleep(TimeUnit.SECONDS.toSeconds(200 + new Random().nextInt(1000)));
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return buildPutSkuResp();
         }
-        if ("putCustData".equals(putSkuDataRequest.getMethod())) {
+        if ("putCustData".equals(method)) {
             return buildPutCustResp();
         }
-        if ("putASNData".equals(putSkuDataRequest.getMethod())) {
+        if ("putPOData".equals(method)) {
             return putASNData();
         }
-        if ("putSOData".equals(putSkuDataRequest.getMethod())) {
+        if ("putSOData".equals(method)) {
             return putSOData();
         }
-        if ("querySOStatus".equals(putSkuDataRequest.getMethod())) {
+        if ("querySOStatus".equals(method)) {
             return querySOStatus();
         }
-        if ("confirmSOStatus".equals(putSkuDataRequest.getMethod())) {
+        if ("confirmSOTStatus".equals(method)) {
             return confirmSOStatus();
         }
-        if ("cancelASNData".equals(putSkuDataRequest.getMethod())) {
+        if ("cancelASNData".equals(method)) {
             return cancelASNData();
         }
-        if ("cancelSOData".equals(putSkuDataRequest.getMethod())) {
+        if ("cancelSOData".equals(method)) {
+//            try {
+//                Thread.sleep(TimeUnit.SECONDS.toSeconds(4000));
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return cancelSOData();
         }
-        if ("queryINVData".equals(putSkuDataRequest.getMethod())) {
+        if ("queryINVData".equals(method)) {
             return queryINVData();
         }
         return null;
@@ -117,6 +137,7 @@ public class FluxWmsController {
     }
 
     private JSONObject cancelSOData() {
+
         List<String> strings = new ArrayList<>();
         strings.add("{\"Response\":{\"return\":{\"returnCode\":\"0000\",\"returnDesc\":\"ok\",\"returnFlag\":\"1\"}}}");
         strings.add("{\"Response\":{\"return\":{\"returnCode\":\"0001\",\"returnDesc\":\"错误原因\",\"returnFlag\":\"0\"}}}");
