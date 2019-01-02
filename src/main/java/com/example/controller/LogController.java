@@ -1,23 +1,20 @@
 package com.example.controller;
 
 import com.example.demo.FluxWmsClient;
-import com.example.demo.FluxWmsConfig;
-import com.example.demo.NeedLog;
-import com.example.demo.PutSkuDataPhpRequest;
-import com.example.demo.PutSkuDataRequest;
-import com.example.demo.PutSkuDataWmsResponse;
-import feign.Feign;
-import feign.Target;
-import feign.codec.Decoder;
-import feign.codec.Encoder;
+import com.example.domain.RefundRequest;
+import com.wozaijia.common.util.IdUtil;
+import com.wozaijia.common.util.tuple.Tuple;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.netflix.feign.FeignClientsConfiguration;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import javax.validation.Valid;
+import java.util.ArrayList;
 
 /**
  * @author shipengfish
@@ -26,40 +23,64 @@ import java.net.URISyntaxException;
  * @since 1.0
  */
 @RestController
-@Import(FeignClientsConfiguration.class)
+//@Import(FluxFeignConfiguration.class)
 public class LogController {
     @Autowired
     private FluxWmsClient fluxWmsClient;
-    @Autowired
-    private FluxWmsConfig fluxWmsConfig;
 
-    @Autowired
-    public LogController(Decoder decoder, Encoder encoder) {
-        fluxWmsClient = Feign.builder()
-                .encoder(encoder)
-                .decoder(decoder)
-                .target(Target.EmptyTarget.create(FluxWmsClient.class));
+    @GetMapping("/test-feign-a")
+    public void testFeign() {
+        final ArrayList<Integer> codes = new ArrayList<>();
+        codes.add(12);
+        fluxWmsClient.testFeign(codes);
     }
 
-    public String getFluxWmsBaseUrl() {
-        if (fluxWmsConfig.isUseTestEnv()) {
-            return fluxWmsConfig.getTestWmsUrl();
-        }
-        return fluxWmsConfig.getWmsBaseUrl();
+    @GetMapping("/refunds")
+    public void getRefunds(String dataSourceName, String dataSourceKeys) {
+        RefundRequest refundRequest = new RefundRequest();
+        refundRequest.setDataSourceKeys(dataSourceKeys);
+        refundRequest.setDataSourceName(dataSourceName);
+        refundRequest.setKey("this is a key");
+
+        String sign = "abc123";
+        String random = "&random=" + IdUtil.uuid16();
+        sign = sign + random;
+        Tuple.TwoTuple<Integer, Integer> p = fluxWmsClient.getRefunds(refundRequest, sign);
+
+        System.out.println(p);
     }
 
-    @GetMapping("/tt")
-    @NeedLog
-    public void ttA(PutSkuDataPhpRequest fluxWmsPhpRequest) throws URISyntaxException {
-        hha();
-        PutSkuDataRequest putSkuDataRequest = new PutSkuDataRequest(fluxWmsPhpRequest, fluxWmsConfig);
-
-        PutSkuDataWmsResponse putSkuDataWmsResponse = fluxWmsClient.putSKUData(new URI(getFluxWmsBaseUrl() + "/put-sku-data"), putSkuDataRequest);
-
-        System.out.println(putSkuDataWmsResponse);
+    @GetMapping("/upload")
+    public void upload(@RequestParam("file") MultipartFile multipartFile) {
+        System.out.println(multipartFile);
     }
 
-    private void hha() {
-        System.out.println("hhh");
+    @PostMapping("/valid")
+    public void valid(@RequestBody @Valid ListWrapper<People> peopleListWrapper) {
+        System.out.println(peopleListWrapper);
+    }
+}
+
+class People {
+    @NotBlank(message = "name 不能为空")
+    private String name;
+
+    @NotBlank(message = "age 不能为空")
+    private String age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }

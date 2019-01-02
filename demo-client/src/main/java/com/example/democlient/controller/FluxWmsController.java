@@ -2,7 +2,10 @@ package com.example.democlient.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.democlient.demo.FluxWmsRequest;
+import com.example.democlient.demo.PurchaseOrderQueryDTO;
+import com.example.democlient.demo.RefundRequest;
+import com.wozaijia.common.util.tuple.Tuple;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +23,24 @@ import java.util.List;
  */
 @RestController
 public class FluxWmsController {
+
+    @GetMapping("/test-feign")
+    public void export(@RequestParam("codes") List<Integer> codes) {
+        System.out.println(codes);
+    }
+
+    @GetMapping("/query")
+    public void t(PurchaseOrderQueryDTO queryDTO) {
+        System.out.println(JSON.toJSONString(queryDTO));
+    }
+
+    @PostMapping("/get-refunds")
+    public Tuple.TwoTuple<Integer, Integer> getRefunds(@RequestBody RefundRequest refundRequest, @RequestParam("sign") String sign) {
+        System.out.println(refundRequest);
+        System.out.println(sign);
+        Tuple.TwoTuple<Integer, Integer> p = Tuple.twoTuple(12, 12);
+        return p;
+    }
 
     @PostMapping("/")
     public JSONObject putSKUData(@RequestParam("client_customerid") String client_customerid,

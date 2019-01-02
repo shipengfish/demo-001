@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Configuration;
  * @date 2018/9/11
  * @since 1.0
  */
-@Configuration
+//@Configuration
 public class FluxFeignConfiguration {
 
     @Bean
     public Contract feignConfiguration() {
         return new feign.Contract.Default();
     }
+
+
 }
