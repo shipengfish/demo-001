@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author shipengfish
@@ -45,7 +47,10 @@ public class LogController {
         String sign = "abc123";
         String random = "&random=" + IdUtil.uuid16();
         sign = sign + random;
-        Tuple.TwoTuple<Integer, Integer> p = fluxWmsClient.getRefunds(refundRequest, sign);
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put("key", "this is a key");
+        headerMap.put("token", "token");
+        Tuple.TwoTuple<Integer, Integer> p = fluxWmsClient.getRefunds(refundRequest, sign, headerMap);
 
         System.out.println(p);
     }

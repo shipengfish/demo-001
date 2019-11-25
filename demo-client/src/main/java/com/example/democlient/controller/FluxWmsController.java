@@ -4,10 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.democlient.demo.PurchaseOrderQueryDTO;
 import com.example.democlient.demo.RefundRequest;
+import com.example.democlient.service.AService;
+import com.example.democlient.service.BService;
 import com.wozaijia.common.util.tuple.Tuple;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +28,11 @@ import java.util.List;
 @RestController
 public class FluxWmsController {
 
+    @Autowired
+    private AService aService;
+    @Autowired
+    private BService bService;
+
     @GetMapping("/test-feign")
     public void export(@RequestParam("codes") List<Integer> codes) {
         System.out.println(codes);
@@ -35,11 +44,19 @@ public class FluxWmsController {
     }
 
     @PostMapping("/get-refunds")
-    public Tuple.TwoTuple<Integer, Integer> getRefunds(@RequestBody RefundRequest refundRequest, @RequestParam("sign") String sign) {
+    public Tuple.TwoTuple<Integer, Integer> getRefunds(@RequestBody RefundRequest refundRequest, @RequestParam("sign") String sign, @RequestHeader("key") String key, @RequestHeader("token") String token) {
         System.out.println(refundRequest);
         System.out.println(sign);
+        System.out.println(key);
+        System.out.println(token);
         Tuple.TwoTuple<Integer, Integer> p = Tuple.twoTuple(12, 12);
         return p;
+    }
+
+    @GetMapping("/test-extend")
+    public String testExtend() {
+        final String say = bService.say();
+        return say + " " + aService.helloWorld();
     }
 
     @PostMapping("/")
