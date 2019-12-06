@@ -14,7 +14,7 @@ public class Job {
 
     public static void main(String[] args) {
 
-        String name = "com.wozaijia.finance.admin.business.job.FactorySkuMaintenanceNotifyJob";
+        String name = "com.wozaijia.finance.admin.business.job.EkbVoucherSyncJob";
         String cluster = "172.20.4.250:2181";
         String namespace = "ejob";
         JobOperateAPI jobOperateAPI = JobAPIFactory.createJobOperateAPI(cluster, namespace, com.google.common.base.Optional.absent());
